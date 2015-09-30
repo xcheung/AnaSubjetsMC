@@ -15,6 +15,9 @@ Analysis tools of sub-jets in MC
     - to be optimazed, use one macros for all kinds of analyses
 - scripts # scripts used to submit the jobs on PDSF
 - merge # some macros and scripts used to merge the output objects (ntuples, histograms...)
+- makefile # makefiles used to compile the macros
+  - pmake # PYTHIA 8 and JEWEL based analysis
+  - amake # PYTHIA 6 and Q-PYTHIA based analysis
 
 # ana
 - local analysis files
