@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+if [ -z $1 ]
+then
+  SUF="C"
+  SRC="main"
+else
+  if [ -z $2 ]
+  then
+    SUF="C"
+    SRC=$1
+  else
+    SUF=$1
+    SRC=$2
+  fi
+fi
+#
+PMakePath=`dirname ${PYTHIA8}`
+PMakeFile=${PMakePath}/pmake/Makefile
+#
+make \
+	--file=${PMakeFile} \
+	SUF_NAME=${SUF} \
+	SRC_NAME=${SRC}
