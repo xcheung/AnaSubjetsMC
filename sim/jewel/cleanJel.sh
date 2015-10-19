@@ -1,24 +1,31 @@
 #!/bin/bash
 #
 for i in \
-  dPtJet_1005_1011 \
-  dPtJet_1011_1021 \
-  dPtJet_1021_1036 \
-  dPtJet_1036_1057 \
-  dPtJet_1057_1084 \
-  dPtJet_1084_1117 \
-  dPtJet_1117_1152 \
-  dPtJet_1152_INFN
+  dPtHat_0005_0011 \
+  dPtHat_0011_0021 \
+  dPtHat_0021_0036 \
+  dPtHat_0036_0057 \
+  dPtHat_0057_0084 \
+  dPtHat_0084_0117 \
+  dPtHat_0117_0152 \
+  dPtHat_0152_0191 \
+  dPtHat_0191_0234 \
+  dPtHat_0234_0282 \
+  dPtHat_0282_0334 \
+  dPtHat_0334_INFN
 do
   mkdir ${i}/integrations
-  mv ${i}/pdfs_15.dat     ${i}/integrations/pdfs.dat
-  mv ${i}/splitint_15.dat ${i}/integrations/splitint.dat
-  mv ${i}/xsecs_15.dat    ${i}/integrations/xsecs.dat
- 
+  mv ${i}/pdfs_4.dat     ${i}/integrations/pdfs.dat
+  mv ${i}/splitint_4.dat ${i}/integrations/splitint.dat
+  mv ${i}/xsecs_4.dat    ${i}/integrations/xsecs.dat
+#
   mkdir ${i}/logfiles
   mv ${i}/out_*.log ${i}/logfiles
 #
-  rm -f ${i}/jewel-2.0.2-*.sh*
+  mkdir ${i}/hepmcs
+  mv ${i}/out_*.hepmc ${i}/hepmcs
+#
+  rm -f ${i}/jewel*.sh*
   rm -f ${i}/param_*.dat
   rm -f ${i}/pdfs_*.dat
   rm -f ${i}/splitint_*.dat
