@@ -25,3 +25,8 @@ Analysis tools of sub-jets in MC
   - selectors # ntuple selectors
 - pre # histogram based analysis
   - decode # macros used to calc the median, MAD... of a distribution
+
+# QA
+Contains the QA macros used to check the typic distributions from the simulation
+- The currenet macros only used to read the JEWEL weighted events
+- todo: develope more general interface to read all type of the simulations
