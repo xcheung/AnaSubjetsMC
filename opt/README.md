@@ -11,7 +11,7 @@
 - header file used to call fortran objs in C++
 
 # modulefiles and setup
-- example to setup the PICO and PYQUEN envs
+- examples to setup the PICO and PYQUEN envs
 
 # python
 - examples to extend C++ and call in PYTHON
