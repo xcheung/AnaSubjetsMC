@@ -1,0 +1,18 @@
+#%Module##
+##
+## modulefile
+##
+proc ModulesHelp { } {
+  puts stderr "Setup PICO version: $version"
+}
+
+set version master
+set tagname pico
+set sw_path YOUR_OPT_PATH
+set tagpath $sw_path/$tagname/$version
+
+setenv       PICOPKG         $tagpath
+prepend-path PATH            $tagpath/bin
+prepend-path LD_LIBRARY_PATH $tagpath/lib
+
+module-whatis "PICO $version"

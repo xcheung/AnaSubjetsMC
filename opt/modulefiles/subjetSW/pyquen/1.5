@@ -1,0 +1,18 @@
+#%Module##
+##
+## modulefile
+##
+proc ModulesHelp { } {
+  puts stderr "Setup PYQUEN version: $version"
+}
+
+set version 1.5
+set tagname pyquen
+set sw_path YOUR_OPT_PATH
+set tagpath $sw_path/$tagname/$version
+
+setenv       PYQUEN          $tagpath
+prepend-path PATH            $tagpath/bin
+prepend-path LD_LIBRARY_PATH $tagpath/lib
+
+module-whatis "PYQUEN $version"

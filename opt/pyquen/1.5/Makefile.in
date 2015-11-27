@@ -1,0 +1,22 @@
+SHELL = /bin/sh
+
+THEDIR = $(shell \pwd)
+TOPDIR = $(shell dirname $(THEDIR))
+
+INCDIR := $(TOPDIR)/inc
+LIBDIR := $(TOPDIR)/lib
+BINDIR := $(TOPDIR)/bin
+
+PYLIBS := -L$(LIBDIR) -lPyquen
+
+F77     := `root-config --f77`
+F77LIBS := $(PYLIBS)
+FCFLAGS := -g -O3 -fPIC
+
+CXX      := `root-config --cxx`
+CXXFLAGS := -I$(INCDIR)
+
+LDFLAGS := -g -O3 -Wall -Werror
+LDLIBS  := $(PYLIBS) -lgfortran
+
+.NOEXPORT:

@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+if [ -z ${PYQUEN} ]
+then
+  echo "Setup PYQUEN EVN..."
+  export PATH=${PWD}/bin:${PATH}
+  export LD_LIBRARY_PATH=${PWD}/lib:${LD_LIBRARY_PATH}
+fi
+#
+main_C.exe
+main_F.exe
+#
+exit 0

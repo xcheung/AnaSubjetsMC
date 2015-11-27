@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+TopDir=${PWD}
+#
+export THEPICODIR="${TopDir}"
+export TARGE_NAME="AnaRecoPicoEvents"
+#
+cd rec
+if [ -d build ]
+then
+  rm -rf build
+fi
+#
+if [ -f ${TARGE_NAME}.so ]
+then
+  rm -rf ${TARGE_NAME}.so
+fi
+#
+python ${THEPICODIR}/python/setup.py build
+mv build/lib.*/${TARGE_NAME}.so ${TopDir}/lib
+rm -rf build
+cd ${TopDir}

@@ -1,0 +1,15 @@
+SHELL = /bin/sh
+
+TOPDIR  = $(shell \pwd)
+INCDIR := $(TOPDIR)/inc
+SRCDIR := $(TOPDIR)/src
+LIBDIR := $(TOPDIR)/lib
+
+CXX      := `root-config --cxx`
+CXXFLAGS := `root-config --cflags` -I$(INCDIR)
+
+LD      := `root-config --ld`
+LDFLAGS := `root-config --ldflags`
+LDFLIBS := `root-config --libs` -lEG
+
+.NOEXPORT:
