@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+export PATH=${PWD}/bin:${PATH}
+BIN="AnaRecPicoJetEvent_HepMC.exe"
+sPATH="#Local#xzhang#subjetsTH#rec#data#pythia8"
+sFILE="out_29"
+sJetR="JetR05"
+sSjeR="SjeR01"
+sWevt="false"
+#
+rm -f *.root
+#
+${BIN} ${sPATH} ${sFILE} ${sJetR} ${sSjeR} ${sWevt}
+#
+exit 0

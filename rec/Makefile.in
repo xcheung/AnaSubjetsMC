@@ -1,0 +1,42 @@
+SHELL = /bin/sh
+
+TOPDIR := $(shell \pwd)
+
+SRCDIR := $(TOPDIR)/src
+BINDIR := $(TOPDIR)/bin
+
+CXX := `root-config --cxx`
+
+ROOT_CXXFLAGS := `root-config --cflags`
+ROOT_LDLIBS   := `root-config --libs` -lEG
+ROOT_LDFLAGS  := `root-config --ldflags`
+
+PICO_CXXFLAGS := -I$(PICOPKG)/inc
+PICO_LDLIBS   := -L$(PICOPKG)/lib -lPico
+
+FASTJET_CXXFLAGS := `fastjet-config --cxxflags`
+FASTJET_LDLIBS   := `fastjet-config --libs`
+
+HEPMC_CXXFLAGS := -I$(HepMCdir)/include
+HEPMC_LDLIBS   := -L$(HepMCdir)/lib -lHepMC -lHepMCfio
+
+COM_CXXFLAGS := $(ROOT_CXXFLAGS) $(PICO_CXXFLAGS)
+COM_LDLIBS   := $(ROOT_LDLIBS) $(PICO_LDLIBS)
+
+OTF_CXXFLAGS := $(COM_CXXFLAGS) $(HEPMC_CXXFLAGS) $(FASTJET_CXXFLAGS)
+OTF_LDLIBS   := $(COM_LDLIBS) $(HEPMC_LDLIBS) $(FASTJET_LDLIBS)
+
+REC_CXXFLAGS := $(COM_CXXFLAGS) $(FASTJET_CXXFLAGS)
+REC_LDLIBS   := $(COM_LDLIBS) $(FASTJET_LDLIBS)
+
+COV_CXXFLAGS := $(COM_CXXFLAGS) $(HEPMC_CXXFLAGS)
+COV_LDLIBS   := $(COM_LDLIBS) $(HEPMC_LDLIBS)
+
+LD      := `root-config --ld`
+LDFLAGS := -g -O3 -Wall -Werror -fPIC $(ROOT_LDFLAGS)
+
+OTF_TAG := AnaRecPicoJetEvent_HepMC
+REC_TAG := AnaRecPicoJetEvent
+COV_TAG := AnaCovHepMC2Pico
+
+.NOEXPORT:

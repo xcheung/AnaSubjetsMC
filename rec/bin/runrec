@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+export PATH=${PWD}/bin:${PATH}
+BIN="AnaRecPicoJetEvent.exe"
+sPATH="#Local#xzhang#subjetsTH#rec#out#cov"
+sFILE="out_29"
+sJetR="JetR05"
+sSjeR="SjeR01"
+#
+rm -f *.root
+#
+${BIN} ${sPATH} ${sFILE} ${sJetR} ${sSjeR}
+#
+exit 0

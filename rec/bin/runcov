@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+export PATH=${PWD}/bin:${PATH}
+BIN="AnaCovHepMC2Pico.exe"
+sPATH="#Local#xzhang#subjetsTH#rec#data#pythia8"
+sFILE="out_29"
+sWevt="false"
+#
+rm -f *.root
+#
+${BIN} ${sPATH} ${sFILE} ${sWevt}
+#
+exit 0
