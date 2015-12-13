@@ -379,103 +379,92 @@ Bool_t AnalysisSelectorPicoJetEvent::RunAnalysisIAA()
   const Double_t dNorm = EventNorm(); if (dNorm<=0.) return kTRUE;
 //=============================================================================
 
-  TPicoVector *pTrg = Leading(); if (!pTrg) return kTRUE;
-  Double_t dEta = pTrg->Eta(); if (TMath::Abs(dEta)>2.6) return kFALSE;
+  TH1D *hTrgPt = dynamic_cast<TH1D*>(fOutput->FindObject("hTrgPt")); if (!hTrgPt) return kTRUE;
 
-  TH1D *hLtkPt = dynamic_cast<TH1D*>(fOutput->FindObject("hLtkPt")); if (!hLtkPt) return kTRUE;
-  Double_t dTrg = pTrg->Pt(); hLtkPt->Fill(dTrg,dNorm); if (dTrg<10.) return kFALSE;
-//=============================================================================
+  TH2D *hR060Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR060Dsz")); if (!hR060Dsz) return kTRUE;
+  TH2D *hR100Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR100Dsz")); if (!hR100Dsz) return kTRUE;
+  TH2D *hR150Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR150Dsz")); if (!hR150Dsz) return kTRUE;
 
-  TH2D *hR10Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR10Dsz")); if (!hR10Dsz) return kTRUE;
-  TH2D *hR15Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR15Dsz")); if (!hR15Dsz) return kTRUE;
-  TH2D *hR20Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR20Dsz")); if (!hR20Dsz) return kTRUE;
-  TH2D *hR30Dsz = dynamic_cast<TH2D*>(fOutput->FindObject("hR30Dsz")); if (!hR30Dsz) return kTRUE;
+  TH2D *hR060Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR060Phi")); if (!hR060Phi) return kTRUE;
+  TH2D *hR100Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR100Phi")); if (!hR100Phi) return kTRUE;
+  TH2D *hR150Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR150Phi")); if (!hR150Phi) return kTRUE;
 
-  TH2D *hR10Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR10Phi")); if (!hR10Phi) return kTRUE;
-  TH2D *hR15Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR15Phi")); if (!hR15Phi) return kTRUE;
-  TH2D *hR20Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR20Phi")); if (!hR20Phi) return kTRUE;
-  TH2D *hR30Phi = dynamic_cast<TH2D*>(fOutput->FindObject("hR30Phi")); if (!hR30Phi) return kTRUE;
+  TH2D *hR060Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR060Phl")); if (!hR060Phl) return kTRUE;
+  TH2D *hR100Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR100Phl")); if (!hR100Phl) return kTRUE;
+  TH2D *hR150Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR150Phl")); if (!hR150Phl) return kTRUE;
 
-  TH2D *hR10Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR10Phl")); if (!hR10Phl) return kTRUE;
-  TH2D *hR15Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR15Phl")); if (!hR15Phl) return kTRUE;
-  TH2D *hR20Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR20Phl")); if (!hR20Phl) return kTRUE;
-  TH2D *hR30Phl = dynamic_cast<TH2D*>(fOutput->FindObject("hR30Phl")); if (!hR30Phl) return kTRUE;
-
-  TH2D *hR10Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR10Phh")); if (!hR10Phh) return kTRUE;
-  TH2D *hR15Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR15Phh")); if (!hR15Phh) return kTRUE;
-  TH2D *hR20Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR20Phh")); if (!hR20Phh) return kTRUE;
-  TH2D *hR30Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR30Phh")); if (!hR30Phh) return kTRUE;
+  TH2D *hR060Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR060Phh")); if (!hR060Phh) return kTRUE;
+  TH2D *hR100Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR100Phh")); if (!hR100Phh) return kTRUE;
+  TH2D *hR150Phh = dynamic_cast<TH2D*>(fOutput->FindObject("hR150Phh")); if (!hR150Phh) return kTRUE;
 //=============================================================================
 
   const Double_t dThr = -0.5 * TMath::Pi();
   const Double_t dCut = TMath::TwoPi() / 3.;
-  TVector3 vJet, vTrg; vTrg.SetPtEtaPhi(dTrg, dEta, pTrg->Phi());
 //=============================================================================
 
-  for (Int_t j=0; j<Njets(); j++) {
-    TPicoJet *pJet = Jet(j); if (!pJet) continue;
-    Int_t np = Npieces(pJet); if (np<2) { pJet = 0; continue; }
+  TVector3 vJet, vTrg;
+  for (Int_t t=0; t<Njets(); t++) {
+    TPicoJet *pTrg = Jet(t); if (!pTrg) continue;
+    Double_t  dTrg = pTrg->Pt(); hTrgPt->Fill(dTrg);
+
+    if (dTrg<60.) { pTrg = 0; continue; }
+    vTrg.SetPtEtaPhi(dTrg, pTrg->Eta(), pTrg->Phi());
 //=============================================================================
 
-    Double_t d1sj = -1.;
-    Double_t d2sj = -1.;
-    for (Int_t i=0; i<2; i++) {
-      TPicoPiece *piece = Piece(i,pJet); if (!piece) continue;
+    for (Int_t j=0; j<Njets(); j++) if (j!=t) {
+      TPicoJet *pJet = Jet(j);  if (!pJet) continue;
+      Int_t np = Npieces(pJet); if (np<2) { pJet = 0; continue; }
 
-      if (i==0) d1sj = piece->Pt();
-      if (i==1) d2sj = piece->Pt();
+      Double_t d1sj = -1.;
+      Double_t d2sj = -1.;
+      for (Int_t i=0; i<2; i++) {
+        TPicoPiece *piece = Piece(i,pJet); if (!piece) continue;
+        if (i==0) d1sj = piece->Pt();
+        if (i==1) d2sj = piece->Pt();
+        piece = 0;
+      }
 
-      piece = 0;
+      if ((d1sj<0.) || (d2sj<0.)) { pJet = 0; continue; }
+//=============================================================================
+
+      Double_t dJet = pJet->Pt();
+      vJet.SetPtEtaPhi(dJet, pJet->Eta(), pJet->Phi());
+      Double_t dsz = (d1sj - d2sj) / dJet; if (dsz>=1.) dsz = 1. - 1e-6;
+
+      Double_t dPhi = vJet.DeltaPhi(vTrg);
+      Double_t dVar = ((dPhi<dThr) ? (dPhi + TMath::TwoPi()) : dPhi);
+//=============================================================================
+
+      Bool_t bPhl = (dsz<0.2);
+      Bool_t bPhh = (dsz>0.8);
+      Bool_t bPhd = (TMath::Abs(dPhi)>dCut);
+
+      if (dTrg>60.) {
+        hR060Phi->Fill(dJet, dVar, dNorm);
+        if (bPhl) hR060Phl->Fill(dJet, dVar, dNorm);
+        if (bPhh) hR060Phh->Fill(dJet, dVar, dNorm);
+        if (bPhd) hR060Dsz->Fill(dJet, dsz,  dNorm);
+      }
+
+      if (dTrg>100.) {
+        hR100Phi->Fill(dJet, dVar, dNorm);
+        if (bPhl) hR100Phl->Fill(dJet, dVar, dNorm);
+        if (bPhh) hR100Phh->Fill(dJet, dVar, dNorm);
+        if (bPhd) hR100Dsz->Fill(dJet, dsz,  dNorm);
+      }
+
+      if (dTrg>150.) {
+        hR150Phi->Fill(dJet, dVar, dNorm);
+        if (bPhl) hR150Phl->Fill(dJet, dVar, dNorm);
+        if (bPhh) hR150Phh->Fill(dJet, dVar, dNorm);
+        if (bPhd) hR150Dsz->Fill(dJet, dsz,  dNorm);
+      }
+
+      pJet = 0;
     }
 //=============================================================================
 
-    if ((d1sj<0.) || (d2sj<0.)) { pJet = 0; continue; }
-//=============================================================================
-
-    Double_t dJet = pJet->Pt();
-    Double_t dsz = (d1sj - d2sj) / dJet; if (dsz>=1.) dsz = 1. - 1e-6;
-//=============================================================================
-
-    vJet.SetPtEtaPhi(dJet, pJet->Eta(), pJet->Phi());
-
-    Double_t dPhi = vTrg.DeltaPhi(vJet);
-    Double_t dVar = ((dPhi<dThr) ? (dPhi + TMath::TwoPi()) : dPhi);
-//=============================================================================
-
-    Bool_t bPhl = (dsz<0.2);
-    Bool_t bPhh = (dsz>0.8);
-    Bool_t bPhd = (TMath::Abs(dPhi)>dCut);
-
-    if (dTrg>10.) {
-      hR10Phi->Fill(dJet, dVar, dNorm);
-      if (bPhl) hR10Phl->Fill(dJet, dVar, dNorm);
-      if (bPhh) hR10Phh->Fill(dJet, dVar, dNorm);
-      if (bPhd) hR10Dsz->Fill(dJet, dsz,  dNorm);
-    }
-
-    if (dTrg>15.) {
-      hR15Phi->Fill(dJet, dVar, dNorm);
-      if (bPhl) hR15Phl->Fill(dJet, dVar, dNorm);
-      if (bPhh) hR15Phh->Fill(dJet, dVar, dNorm);
-      if (bPhd) hR15Dsz->Fill(dJet, dsz,  dNorm);
-    }
-
-    if (dTrg>20.) {
-      hR20Phi->Fill(dJet, dVar, dNorm);
-      if (bPhl) hR20Phl->Fill(dJet, dVar, dNorm);
-      if (bPhh) hR20Phh->Fill(dJet, dVar, dNorm);
-      if (bPhd) hR20Dsz->Fill(dJet, dsz,  dNorm);
-    }
-
-    if (dTrg>30.) {
-      hR30Phi->Fill(dJet, dVar, dNorm);
-      if (bPhl) hR30Phl->Fill(dJet, dVar, dNorm);
-      if (bPhh) hR30Phh->Fill(dJet, dVar, dNorm);
-      if (bPhd) hR30Dsz->Fill(dJet, dsz,  dNorm);
-    }
-//=============================================================================
-
-    pJet = 0;
+    pTrg = 0;
   }
 //=============================================================================
 
@@ -533,27 +522,23 @@ void AnalysisSelectorPicoJetEvent::MakeOutputsIAA()
   const Double_t dPhiMin = -0.5 * TMath::Pi();
   const Double_t dPhiMax =  1.5 * TMath::Pi();
 
-  TH1D *hLtkPt = new TH1D("hLtkPt", "", 1000, 0., 1000.); hLtkPt->Sumw2(); fOutput->Add(hLtkPt);
+  TH1D *hTrgPt = new TH1D("hTrgPt", "", 1000, 0., 1000.); hTrgPt->Sumw2(); fOutput->Add(hTrgPt);
 
-  TH2D *hR10Phi = new TH2D("hR10Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR10Phi->Sumw2(); fOutput->Add(hR10Phi);
-  TH2D *hR15Phi = new TH2D("hR15Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR15Phi->Sumw2(); fOutput->Add(hR15Phi);
-  TH2D *hR20Phi = new TH2D("hR20Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR20Phi->Sumw2(); fOutput->Add(hR20Phi);
-  TH2D *hR30Phi = new TH2D("hR30Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR30Phi->Sumw2(); fOutput->Add(hR30Phi);
+  TH2D *hR060Phi = new TH2D("hR060Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR060Phi->Sumw2(); fOutput->Add(hR060Phi);
+  TH2D *hR100Phi = new TH2D("hR100Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR100Phi->Sumw2(); fOutput->Add(hR100Phi);
+  TH2D *hR150Phi = new TH2D("hR150Phi", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR150Phi->Sumw2(); fOutput->Add(hR150Phi);
 
-  TH2D *hR10Phl = new TH2D("hR10Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR10Phl->Sumw2(); fOutput->Add(hR10Phl);
-  TH2D *hR15Phl = new TH2D("hR15Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR15Phl->Sumw2(); fOutput->Add(hR15Phl);
-  TH2D *hR20Phl = new TH2D("hR20Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR20Phl->Sumw2(); fOutput->Add(hR20Phl);
-  TH2D *hR30Phl = new TH2D("hR30Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR30Phl->Sumw2(); fOutput->Add(hR30Phl);
+  TH2D *hR060Phl = new TH2D("hR060Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR060Phl->Sumw2(); fOutput->Add(hR060Phl);
+  TH2D *hR100Phl = new TH2D("hR100Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR100Phl->Sumw2(); fOutput->Add(hR100Phl);
+  TH2D *hR150Phl = new TH2D("hR150Phl", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR150Phl->Sumw2(); fOutput->Add(hR150Phl);
 
-  TH2D *hR10Phh = new TH2D("hR10Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR10Phh->Sumw2(); fOutput->Add(hR10Phh);
-  TH2D *hR15Phh = new TH2D("hR15Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR15Phh->Sumw2(); fOutput->Add(hR15Phh);
-  TH2D *hR20Phh = new TH2D("hR20Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR20Phh->Sumw2(); fOutput->Add(hR20Phh);
-  TH2D *hR30Phh = new TH2D("hR30Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR30Phh->Sumw2(); fOutput->Add(hR30Phh);
+  TH2D *hR060Phh = new TH2D("hR060Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR060Phh->Sumw2(); fOutput->Add(hR060Phh);
+  TH2D *hR100Phh = new TH2D("hR100Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR100Phh->Sumw2(); fOutput->Add(hR100Phh);
+  TH2D *hR150Phh = new TH2D("hR150Phh", "", 1000, 0., 1000., 200, dPhiMin, dPhiMax); hR150Phh->Sumw2(); fOutput->Add(hR150Phh);
 
-  TH2D *hR10Dsz = new TH2D("hR10Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR10Dsz->Sumw2(); fOutput->Add(hR10Dsz);
-  TH2D *hR15Dsz = new TH2D("hR15Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR15Dsz->Sumw2(); fOutput->Add(hR15Dsz);
-  TH2D *hR20Dsz = new TH2D("hR20Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR20Dsz->Sumw2(); fOutput->Add(hR20Dsz);
-  TH2D *hR30Dsz = new TH2D("hR30Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR30Dsz->Sumw2(); fOutput->Add(hR30Dsz);
+  TH2D *hR060Dsz = new TH2D("hR060Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR060Dsz->Sumw2(); fOutput->Add(hR060Dsz);
+  TH2D *hR100Dsz = new TH2D("hR100Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR100Dsz->Sumw2(); fOutput->Add(hR100Dsz);
+  TH2D *hR150Dsz = new TH2D("hR150Dsz", "", 1000, 0., 1000., 100, 0., 1.); hR150Dsz->Sumw2(); fOutput->Add(hR150Dsz);
 
   return;
 }
