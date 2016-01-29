@@ -405,7 +405,7 @@ Bool_t AnalysisSelectorPicoJetEvent::RunAnalysisIAA()
   TVector3 vJet, vTrg;
   for (Int_t t=0; t<Njets(); t++) {
     TPicoJet *pTrg = Jet(t); if (!pTrg) continue;
-    Double_t  dTrg = pTrg->Pt(); hTrgPt->Fill(dTrg);
+    Double_t  dTrg = pTrg->Pt(); hTrgPt->Fill(dTrg, dNorm);
 
     if (dTrg<60.) { pTrg = 0; continue; }
     vTrg.SetPtEtaPhi(dTrg, pTrg->Eta(), pTrg->Phi());

@@ -5,22 +5,22 @@ void RunAnalysis()
   gSystem->Load("${PICOPKG}/lib/libPico");
 //=============================================================================
 
-//gROOT->LoadMacro("AnalysisSelectorPicoJetEvent.cxx+"); return;
+  gROOT->LoadMacro("AnalysisSelectorPicoJetEvent.cxx+"); return;
 //=============================================================================
 
   const TString sECMS = "2760GeV";
   const TString sReco = "AkT05_kT01";
 
-  const TString sType = "jewel";
-  const TString sMode = "med";
+  const TString sType = "pyquen";
+  const TString sMode = "IANGLU0";
 
-  const TString sPath = "/data1/xzhang/data/mc/subjetsTH";
+  const TString sPath = "/data1/xzhang/mc/subjetsTH";
   const TString sList = Form("%s/%s/%s/%s/dataLists/%s.txt",sPath.Data(),sType.Data(),sECMS.Data(),sMode.Data(),sReco.Data());
 
   TChain *chain = CreateChain(sList); if (!chain) return;
 //=============================================================================
 
-  chain->Process("AnalysisSelectorPicoJetEvent.cxx+", "all:wgt");
+  chain->Process("AnalysisSelectorPicoJetEvent.cxx+", "all");
 //=============================================================================
 
   return;
